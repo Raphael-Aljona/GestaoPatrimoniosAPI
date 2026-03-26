@@ -43,20 +43,6 @@ namespace GestaoPatrimonio.Applications.Service
             return areaDto;
         }
 
-        public ListarAreaDto ListarPorNome(string nome)
-        {
-            Area area = _repository.BuscarPorNome(nome);
-
-            if (area == null) throw new DomainException("Área não encontrada");
-
-            ListarAreaDto areaDto = new ListarAreaDto
-            {
-                NomeArea = area.NomeArea
-            };
-
-            return areaDto;
-        }
-
         public void Adicionar(CriarAreaDto dto)
         {
             Validar.ValidarNome(dto.NomeArea);

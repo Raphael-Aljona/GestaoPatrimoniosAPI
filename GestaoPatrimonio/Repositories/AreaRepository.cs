@@ -43,5 +43,6 @@ namespace GestaoPatrimonio.Repositories
             areaBanco.NomeArea = area.NomeArea;
             _context.SaveChanges();
         }
+
     }
 }

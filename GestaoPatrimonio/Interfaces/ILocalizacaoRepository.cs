@@ -1,10 +1,14 @@
 ﻿using GestaoPatrimonio.Domains;
-using GestaoPatrimonio.DTOs.LocalizacaoDto;
 
 namespace GestaoPatrimonio.Interfaces
 {
     public interface ILocalizacaoRepository
     {
         List<Localizacao> Listar();
+        Localizacao BuscarPorId(Guid localizacaoId);
+        void Adicionar(Localizacao localizacao);
+        Localizacao BuscarPorNome(string nome);
+        bool AreaExiste(Guid areaId);
+        void Atualizar(Localizacao localizacao);
     }
 }
