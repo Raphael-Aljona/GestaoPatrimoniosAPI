@@ -36,9 +36,9 @@ namespace GestaoPatrimonio.Repositories
             _context.SaveChanges();
         }
 
-        public Localizacao BuscarPorNome(string nome)
+        public Localizacao BuscarPorNome(string nome, Guid areaId)
         {
-            return _context.Localizacao.FirstOrDefault(l => l.NomeLocal == nome);
+            return _context.Localizacao.FirstOrDefault(l => l.NomeLocal.ToLower() == nome.ToLower() && l.AreaID == areaId);
         }
 
         public void Atualizar(Localizacao localizacao)

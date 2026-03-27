@@ -7,7 +7,7 @@ namespace GestaoPatrimonio.Interfaces
         List<Localizacao> Listar();
         Localizacao BuscarPorId(Guid localizacaoId);
         void Adicionar(Localizacao localizacao);
-        Localizacao BuscarPorNome(string nome);
+        Localizacao BuscarPorNome(string nome, Guid areaId);
         bool AreaExiste(Guid areaId);
         void Atualizar(Localizacao localizacao);
     }
