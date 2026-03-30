@@ -1,8 +1,10 @@
-﻿using GestaoPatrimonio.Domains;
+﻿using GestaoPatrimonio.Applications.Rules;
+using GestaoPatrimonio.Domains;
 using GestaoPatrimonio.DTOs.CidadeDto;
-using GestaoPatrimonio.Interfaces;
+using GestaoPatrimonio.Exceptions;
+using GestaoPatrimonios.Interfaces;
 
-namespace GestaoPatrimonio.Applications.Service
+namespace GestaoPatrimonios.Applications.Services
 {
     public class CidadeService
     {
@@ -15,15 +17,83 @@ namespace GestaoPatrimonio.Applications.Service
 
         public List<ListarCidadeDto> Listar()
         {
+            List<Cidade> areas = _repository.Listar();
+
             List<Cidade> cidades = _repository.Listar();
-            List<ListarCidadeDto> cidadesDto = cidades.Select(c => new ListarCidadeDto
+
+            List<ListarCidadeDto> cidadesDto = cidades.Select(cidade => new ListarCidadeDto
             {
-                CidadeID = c.CidadeID,
-                Estado = c.Estado,
-                NomeCidade = c.NomeCidade
+                CidadeID = cidade.CidadeID,
+                NomeCidade = cidade.NomeCidade,
+                Estado = cidade.Estado
             }).ToList();
 
             return cidadesDto;
+        }
+
+        public ListarCidadeDto BuscarPorId(Guid cidadeId)
+        {
+            Cidade? cidade = _repository.BuscarPorId(cidadeId);
+
+            if (cidade == null)
+            {
+                throw new DomainException("Cidade não encontrada.");
+            }
+
+            ListarCidadeDto cidadeDto = new ListarCidadeDto
+            {
+                CidadeID = cidade.CidadeID,
+                NomeCidade = cidade.NomeCidade,
+                Estado = cidade.Estado
+            };
+
+            return cidadeDto;
+        }
+
+        public void Adicionar(CriarCidadeDto dto)
+        {
+            Validar.ValidarNome(dto.NomeCidade);
+            Validar.ValidarEstado(dto.Estado);
+
+            Cidade? cidadeExistente = _repository.BuscarPorNomeEEstado(dto.NomeCidade, dto.Estado);
+
+            if (cidadeExistente != null)
+            {
+                throw new DomainException("Já existe uma cidade cadastrada com esse nome nesse estado.");
+            }
+
+            Cidade cidade = new Cidade
+            {
+                NomeCidade = dto.NomeCidade,
+                Estado = dto.Estado
+            };
+
+            _repository.Adicionar(cidade);
+        }
+
+        public void Atualizar(Guid cidadeId, CriarCidadeDto dto)
+        {
+            Validar.ValidarNome(dto.NomeCidade);
+            Validar.ValidarEstado(dto.Estado);
+
+            Cidade? cidadeBanco = _repository.BuscarPorId(cidadeId);
+
+            if (cidadeBanco == null)
+            {
+                throw new DomainException("Cidade não encontrada.");
+            }
+
+            Cidade? cidadeExistente = _repository.BuscarPorNomeEEstado(dto.NomeCidade, dto.Estado);
+
+            if (cidadeExistente != null && cidadeExistente.CidadeID != cidadeId)
+            {
+                throw new DomainException("Já existe uma cidade cadastrada com esse nome nesse estado.");
+            }
+
+            cidadeBanco.NomeCidade = dto.NomeCidade;
+            cidadeBanco.Estado = dto.Estado;
+
+            _repository.Atualizar(cidadeBanco);
         }
     }
 }

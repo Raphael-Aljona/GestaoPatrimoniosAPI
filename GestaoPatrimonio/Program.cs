@@ -3,6 +3,9 @@ using GestaoPatrimonio.Applications.Service;
 using GestaoPatrimonio.Contexts;
 using GestaoPatrimonio.Interfaces;
 using GestaoPatrimonio.Repositories;
+using GestaoPatrimonios.Applications.Services;
+using GestaoPatrimonios.Interfaces;
+using GestaoPatrimonios.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

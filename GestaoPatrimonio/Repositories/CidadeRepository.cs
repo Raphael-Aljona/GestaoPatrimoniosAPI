@@ -1,40 +1,60 @@
 ﻿using GestaoPatrimonio.Contexts;
 using GestaoPatrimonio.Domains;
 using GestaoPatrimonio.Interfaces;
+using GestaoPatrimonios.Interfaces;
 
-namespace GestaoPatrimonio.Repositories
+namespace GestaoPatrimonios.Repositories
 {
     public class CidadeRepository : ICidadeRepository
     {
         private readonly GestaoPatrimoniosContext _context;
 
-        public CidadeRepository (GestaoPatrimoniosContext context)
+        public CidadeRepository(GestaoPatrimoniosContext context)
         {
             _context = context;
         }
 
         public List<Cidade> Listar()
         {
-            return _context.Cidade.OrderBy(c => c.NomeCidade).ToList();
+            return _context.Cidade.OrderBy(cidade => cidade.NomeCidade).ToList();
         }
+
         public Cidade BuscarPorId(Guid cidadeId)
         {
             return _context.Cidade.Find(cidadeId);
         }
 
+        public Cidade? BuscarPorNomeEEstado(string nomeCidade, string estado)
+        {
+            return _context.Cidade.FirstOrDefault(cidade =>
+                cidade.NomeCidade.ToLower() == nomeCidade.ToLower() &&
+                cidade.Estado.ToLower() == estado.ToLower());
+        }
+
         public void Adicionar(Cidade cidade)
         {
-            throw new NotImplementedException();
+            _context.Cidade.Add(cidade);
+            _context.SaveChanges();
         }
 
         public void Atualizar(Cidade cidade)
         {
-            throw new NotImplementedException();
-        }
+            if (cidade == null)
+            {
+                return;
+            }
 
-        public Cidade BuscarPorNomeEstado(string nomeCidade, string estado)
-        {
-            throw new NotImplementedException();
+            Cidade cidadeBanco = _context.Cidade.Find(cidade.CidadeID);
+
+            if (cidadeBanco == null)
+            {
+                return;
+            }
+
+            cidadeBanco.NomeCidade = cidade.NomeCidade;
+            cidadeBanco.Estado = cidade.Estado;
+
+            _context.SaveChanges();
         }
     }
 }
