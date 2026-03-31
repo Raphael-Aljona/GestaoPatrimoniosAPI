@@ -65,7 +65,7 @@ namespace GestaoPatrimonio.Applications.Service
                 DescricaoSAP = localizacaoDto.DescricaoSAP,
                 AreaID = localizacaoDto.AreaId,
             };
-
+                
             _repository.Adicionar(localizacaoR);
         }
 

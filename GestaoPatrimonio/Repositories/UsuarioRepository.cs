@@ -1,0 +1,21 @@
+﻿using GestaoPatrimonio.Contexts;
+using GestaoPatrimonio.Domains;
+using GestaoPatrimonio.Interfaces;
+
+namespace GestaoPatrimonio.Repositories
+{
+    public class UsuarioRepository : IUsuarioRepository
+    {
+        private readonly GestaoPatrimoniosContext _context;
+
+        public UsuarioRepository(GestaoPatrimoniosContext context)
+        {
+            _context = context;
+        }
+
+        public List<Usuario> Listar()
+        {
+            return _context.Usuario.ToList();
+        }
+    }
+}
