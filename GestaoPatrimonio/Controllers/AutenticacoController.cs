@@ -34,27 +34,27 @@ namespace GestaoPatrimonio.Controllers
             }
         }
 
-        //[Authorize]
-        //[HttpPatch("trocar-senha")]
-        //public ActionResult TrocarSenha(ListarUsuarioDto usuarioDto, TrocarPrimeiraSenhaDto trocarSenhaDto)
-        //{
-        //    try
-        //    {
-        //        string usuarioIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        [Authorize]
+        [HttpPatch("trocar-senha")]
+        public ActionResult TrocarSenha(TrocarPrimeiraSenhaDto trocarSenhaDto)
+        {
+            try
+            {
+                string usuarioIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-        //        if (string.IsNullOrWhiteSpace(usuarioIdClaim))
-        //        {
-        //            return Unauthorized("Usuári não autenticado");
-        //        }
+                if (string.IsNullOrWhiteSpace(usuarioIdClaim))
+                {
+                    return Unauthorized("Usuári não autenticado");
+                }
 
-        //        Guid usuarioId = Guid.Parse(usuarioIdClaim);
-        //        _service.TrocarPrimeiraSenha(usuarioId, trocarSenhaDto);
-        //        return NoContent();
-        //    }
-        //    catch (DomainException ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                Guid usuarioId = Guid.Parse(usuarioIdClaim);
+                _service.TrocarPrimeiraSenha(usuarioId, trocarSenhaDto);
+                return NoContent();
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
