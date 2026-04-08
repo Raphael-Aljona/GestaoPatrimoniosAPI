@@ -50,9 +50,6 @@ builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<ICargoRepository, CargoRepository>();
 builder.Services.AddScoped<CargoService>();
 
-builder.Services.AddScoped<ITipoPatrimonioRepository, TipoPatrimonioRepository>();
-builder.Services.AddScoped<TipoPatriomonioService>();
-
 builder.Services.AddScoped<IStatusPatrimonioRepository, StatusPatrimonioRepository>();
 builder.Services.AddScoped<StatusPatrimonioService>();
 
